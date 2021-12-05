@@ -1,7 +1,10 @@
-module Lib (readFileLinesParsedAs, windows) where
+module Lib (readFileLinesParsedAs, readFileLinesMapped, windows) where
 
 readFileLinesParsedAs :: Read a => FilePath -> IO [a]
-readFileLinesParsedAs path = map read . lines <$> readFile path
+readFileLinesParsedAs path = readFileLinesMapped path read
+
+readFileLinesMapped :: FilePath -> (String -> a) -> IO [a]
+readFileLinesMapped path f = map f . lines <$> readFile path
 
 windows :: Int -> [a] -> [[a]]
 windows len list =
